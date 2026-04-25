@@ -245,14 +245,7 @@ nav {
   margin-top:12px;font-size:.67rem;color:rgba(255,255,255,.28);
 }
 
-/* ─── Step 2: Payment iframe ─── */
-#step-iframe { display:none; }
-.iframe-wrap {
-  display:flex;justify-content:center;
-  border-radius:12px;overflow:hidden;
-  background:rgba(0,0,0,.3);margin-bottom:10px;
-}
-.iframe-wrap iframe { border-radius:12px;max-width:100%;display:block; }
+
 
 /* ─── Error state ─── */
 .error-box {
@@ -498,23 +491,7 @@ footer a:hover { color:var(--green); }
         </div>
       </div>
 
-      <!-- ── Step 2: Payment widget ── -->
-      <div id="step-iframe">
-        <div class="iframe-wrap">
-          <iframe id="payIframe"
-            width="346" height="630"
-            frameborder="0" scrolling="no"
-            style="overflow-y:hidden;max-width:100%;border-radius:12px;">
-          </iframe>
-        </div>
-        <div class="secure-row" style="margin-top:8px;">
-          <svg width="10" height="12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 1L1 3v3.5C1 9.1 2.8 11 5 11s4-1.9 4-4.5V3L5 1z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
-            <path d="M3 6l1.5 1.5L7.5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Secured by NOWPayments · Payments are non-refundable after confirmation
-        </div>
-      </div>
+
 
     </div>
   </div>
@@ -589,8 +566,8 @@ function showError(msg) {
   box.classList.add('show');
 }
 
-/* ── Init payment: create NOWPayments invoice ── */
-async function initPayment() {
+/* ── Init payment: redirect directly to NOWPayments with prefilled amount ── */
+function initPayment() {
   const email = document.getElementById('userEmail').value.trim();
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     showError('Please enter a valid email address to receive your receipt and access details.');
@@ -600,66 +577,26 @@ async function initPayment() {
   document.getElementById('errorBox').classList.remove('show');
   const btn = document.getElementById('payBtn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Creating invoice…';
+  btn.innerHTML = '<span class="spinner"></span> Redirecting to payment…';
 
-  const orderId  = `${currentPlan.id}-${Date.now()}`;
-  const desc     = `Signal Whisper ${currentPlan.name} — ${email}`;
+  const orderId = `${currentPlan.id}-${Date.now()}`;
+  const desc    = `Signal Whisper ${currentPlan.name} — ${email}`;
 
-  try {
-    const res = await fetch('https://api.nowpayments.io/v1/invoice', {
-      method: 'POST',
-      headers: {
-        'Content-Type':  'application/json',
-        'x-api-key':     NP_API_KEY
-      },
-      body: JSON.stringify({
-        price_amount:        currentPlan.price,
-        price_currency:      'usd',
-        order_id:            orderId,
-        order_description:   desc,
-        success_url:         window.location.origin + '/?payment=success',
-        cancel_url:          window.location.href,
-        is_fixed_rate:       false,
-        is_fee_paid_by_user: false
-      })
-    });
+  /* Build NOWPayments hosted payment URL — no invoice API call needed */
+  const params = new URLSearchParams({
+    api_key:     NP_API_KEY,
+    amount:      currentPlan.price,
+    currency:    'usd',
+    description: desc,
+    order_id:    orderId,
+    success_url: window.location.origin + '/?payment=success',
+    cancel_url:  window.location.href,
+  });
 
-    if (!res.ok) {
-      const errData = await res.json().catch(() => ({}));
-      throw new Error(errData.message || `API error ${res.status}`);
-    }
-
-    const data = await res.json();
-
-    if (data.invoice_url) {
-      /* ── Preferred: open NOWPayments hosted invoice page ── */
-      window.open(data.invoice_url, '_blank', 'noopener');
-      /* Also embed inline as fallback */
-      showIframeStep(data.invoice_url);
-    } else {
-      throw new Error('No invoice URL returned.');
-    }
-
-  } catch (err) {
-    console.error('NOWPayments invoice error:', err);
-    /* ── Graceful fallback: load donation widget for this plan ── */
-    showError(`Could not create invoice automatically. Loading payment widget… (${err.message})`);
-    setTimeout(() => {
-      document.getElementById('errorBox').classList.remove('show');
-      showIframeStep(
-        `https://nowpayments.io/embeds/donation-widget?api_key=${NP_API_KEY}`
-      );
-    }, 1800);
-  }
-}
-
-/* ── Show iframe payment step ── */
-function showIframeStep(url) {
-  document.getElementById('step-confirm').style.display = 'none';
-  const iframeStep = document.getElementById('step-iframe');
-  iframeStep.style.display = 'block';
-  document.getElementById('payIframe').src = url;
-  document.getElementById('modalTitle').textContent = '₿ Complete Crypto Payment';
+  /* Small delay so the spinner is visible, then redirect */
+  setTimeout(() => {
+    window.location.href = `https://nowpayments.io/payment/?${params.toString()}`;
+  }, 350);
 }
 </script>
 </body>
