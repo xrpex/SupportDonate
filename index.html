@@ -3,410 +3,664 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Donate Crypto — Give Generously</title>
+<title>Signal Whisper — Plans & Pricing</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --navy:    #0d1b2a;
-  --navy2:   #162035;
-  --navy3:   #1e2d45;
-  --orange:  #f97316;
-  --orange2: #fb923c;
-  --teal:    #06b6d4;
-  --white:   #ffffff;
-  --off:     #f0f4f8;
-  --muted:   #64748b;
-  --border:  rgba(255,255,255,.09);
-  --card-bg: #192438;
+  --bg:        #0b1220;
+  --card:      #161f30;
+  --card2:     #1a2640;
+  --green:     #1db97e;
+  --green2:    #15a36d;
+  --green-dim: rgba(29,185,126,.1);
+  --white:     #ffffff;
+  --muted:     rgba(255,255,255,.48);
+  --border:    rgba(255,255,255,.07);
+  --border-g:  rgba(29,185,126,.32);
+  --modal-bg:  #111827;
 }
 
+html { scroll-behavior: smooth; }
 body {
-  font-family: 'Manrope', sans-serif;
-  background: var(--navy);
-  color: var(--white);
-  min-height: 100vh;
-  overflow-x: hidden;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg); color: var(--white);
+  min-height: 100vh; overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
-
-/* ── Noise overlay ── */
 body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% -5%, rgba(29,185,126,.13) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 40% at 95% 85%, rgba(11,180,232,.06) 0%, transparent 55%);
 }
 
-/* ── Background glow blobs ── */
-.blob {
-  position: fixed; z-index: 0; pointer-events: none;
-  border-radius: 50%; filter: blur(80px); opacity: .18;
-}
-.blob-1 { width: 480px; height: 480px; top: -120px; left: -100px; background: var(--orange); }
-.blob-2 { width: 360px; height: 360px; bottom: -60px; right: -80px; background: var(--teal); }
-
-/* ── Layout ── */
-.page {
-  position: relative; z-index: 1;
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}
-
-/* ── Nav ── */
+/* ─── NAV ─── */
 nav {
+  position: sticky; top: 0; z-index: 200;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 22px 40px;
+  padding: 15px 28px;
+  background: rgba(11,18,32,.88); backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(12px);
-  background: rgba(13,27,42,.6);
-  position: sticky; top: 0; z-index: 100;
 }
-.nav-logo {
-  display: flex; align-items: center; gap: 10px;
-  font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700;
-  letter-spacing: -.01em; color: var(--white);
-  text-decoration: none;
+.nav-brand { display:flex;align-items:center;gap:9px;font-size:.92rem;font-weight:700;color:var(--white);text-decoration:none; }
+.brand-icon { width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--green),#0abf72);display:flex;align-items:center;justify-content:center;font-size:.78rem; }
+.nav-links { display:flex;gap:22px; }
+.nav-links a { font-size:.82rem;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s; }
+.nav-links a:hover,.nav-links a.active { color:var(--white); }
+.nav-right { display:flex;gap:9px;align-items:center; }
+.nav-secure-badge {
+  display:flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:8px;
+  background:rgba(29,185,126,.08);border:1px solid var(--border-g);
+  font-size:.72rem;font-weight:600;color:var(--green);letter-spacing:.03em;
 }
-.logo-icon {
-  width: 34px; height: 34px; border-radius: 9px;
-  background: linear-gradient(135deg, var(--orange), #ef4444);
-  display: flex; align-items: center; justify-content: center;
-  font-size: .95rem;
-}
-.nav-pill {
-  padding: 8px 18px; border-radius: 99px;
-  background: rgba(249,115,22,.15);
-  border: 1px solid rgba(249,115,22,.35);
-  font-size: .75rem; font-weight: 600; letter-spacing: .06em;
-  text-transform: uppercase; color: var(--orange);
-}
+.nav-secure-badge svg { width:12px;height:12px; }
+.nav-divider { width:1px;height:20px;background:var(--border); }
+.btn-green { padding:8px 18px;border-radius:8px;border:none;background:var(--green);color:#fff;font-family:'Inter',sans-serif;font-size:.79rem;font-weight:600;cursor:pointer;transition:all .2s; }
+.btn-green:hover { background:var(--green2);transform:translateY(-1px); }
 
-/* ── Hero split ── */
-.hero {
-  display: grid;
-  grid-template-columns: 1fr 420px;
-  gap: 60px;
-  align-items: center;
-  padding: 70px 40px 80px;
-  max-width: 1100px;
-  margin: 0 auto;
-  width: 100%;
+/* ─── PAYMENT TRUST BAR ─── */
+.trust-bar {
+  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:24px;
+  padding:12px 20px;
+  background:rgba(255,255,255,.025);
+  border-bottom:1px solid var(--border);
+  font-size:.72rem;font-weight:500;color:rgba(255,255,255,.38);
+  letter-spacing:.03em;
 }
+.trust-bar-item { display:flex;align-items:center;gap:6px; }
+.trust-bar-item svg { width:13px;height:13px;color:var(--green);opacity:.8; }
 
-/* Left hero copy */
-.hero-copy { animation: fadeUp .7s ease both; }
+/* ─── HERO ─── */
+.hero { position:relative;z-index:1;text-align:center;padding:88px 20px 56px;max-width:680px;margin:0 auto;animation:fadeUp .65s ease both; }
+.hero-pill { display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:99px;background:var(--green-dim);border:1px solid var(--border-g);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:26px; }
+.hero-pill .dot { width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s ease infinite; }
+@keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(1.6)} }
+.hero h1 { font-size:clamp(2.5rem,9vw,4.2rem);font-weight:900;line-height:1.0;letter-spacing:-.035em;margin-bottom:20px; }
+.hero h1 .accent { color:var(--green); }
+.hero p { font-size:.97rem;color:var(--muted);line-height:1.68;max-width:430px;margin:0 auto 34px; }
+.hero-btn { display:inline-flex;align-items:center;gap:9px;padding:15px 36px;border-radius:12px;border:none;background:var(--green);color:#fff;font-family:'Inter',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .25s;box-shadow:0 8px 28px rgba(29,185,126,.38); }
+.hero-btn:hover { background:var(--green2);transform:translateY(-2px);box-shadow:0 14px 36px rgba(29,185,126,.48); }
+.hero-btn svg { width:16px;height:16px; }
 
-.badge {
-  display: inline-flex; align-items: center; gap: 7px;
-  padding: 6px 14px; border-radius: 99px;
-  background: rgba(249,115,22,.12);
-  border: 1px solid rgba(249,115,22,.28);
-  font-size: .72rem; font-weight: 600; letter-spacing: .09em;
-  text-transform: uppercase; color: var(--orange);
-  margin-bottom: 24px;
-}
-.badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); animation: pulse 2s ease infinite; }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.5)} }
+/* ─── STATS ─── */
+.stats-band { position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;max-width:780px;margin:0 auto;padding:0 20px 64px;animation:fadeUp .65s .08s ease both; }
+.stat-card { background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 14px;text-align:center; }
+.stat-val { font-size:2.1rem;font-weight:900;color:var(--green);letter-spacing:-.03em;line-height:1; }
+.stat-lbl { font-size:.7rem;color:var(--muted);margin-top:5px;font-weight:500;letter-spacing:.02em; }
 
-.hero-copy h1 {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(2.6rem, 6vw, 3.8rem);
-  font-weight: 800; line-height: 1.0; letter-spacing: -.03em;
-  color: var(--white);
-  margin-bottom: 20px;
-}
-.hero-copy h1 span { color: var(--orange); }
+/* ─── PLANS ─── */
+.plans-wrap { position:relative;z-index:1;max-width:880px;margin:0 auto;padding:0 20px 90px;animation:fadeUp .65s .15s ease both; }
+.section-head { text-align:center;font-size:clamp(1.75rem,5vw,2.5rem);font-weight:900;letter-spacing:-.03em;margin-bottom:22px; }
 
-.hero-copy p {
-  font-size: .95rem; font-weight: 400; line-height: 1.7;
-  color: rgba(255,255,255,.55);
-  max-width: 400px; margin-bottom: 36px;
-}
+.trial-banner { display:flex;align-items:flex-start;gap:14px;background:rgba(29,185,126,.07);border:1px solid var(--border-g);border-radius:14px;padding:16px 20px;margin-bottom:32px; }
+.trial-ico { width:36px;height:36px;flex-shrink:0;border-radius:10px;background:var(--green-dim);border:1px solid var(--border-g);display:flex;align-items:center;justify-content:center;font-size:.95rem; }
+.trial-t { font-size:.86rem;font-weight:700;color:var(--green);margin-bottom:3px; }
+.trial-b { font-size:.78rem;color:var(--muted);line-height:1.55; }
 
-/* Stats row */
-.stats {
-  display: flex; gap: 32px;
-  padding-top: 32px;
-  border-top: 1px solid var(--border);
-}
-.stat-item {}
-.stat-num {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.6rem; font-weight: 700; color: var(--white);
-}
-.stat-num span { color: var(--orange); }
-.stat-label { font-size: .72rem; font-weight: 500; color: rgba(255,255,255,.4); letter-spacing: .05em; text-transform: uppercase; margin-top: 2px; }
+.grid3 { display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start; }
 
-/* Coins marquee */
-.coin-strip {
-  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px;
+.pcard { position:relative;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:26px 20px 22px;transition:transform .22s,box-shadow .22s; }
+.pcard:hover { transform:translateY(-3px); }
+.pcard.hot { border-color:var(--border-g);background:linear-gradient(155deg,rgba(29,185,126,.1) 0%,var(--card) 55%);box-shadow:0 0 0 1px var(--border-g),0 22px 50px rgba(29,185,126,.1); }
+
+.ribbon { position:absolute;top:-13px;right:16px;padding:5px 13px;border-radius:99px;font-size:.62rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#fff;white-space:nowrap; }
+.ribbon.popular { background:linear-gradient(135deg,#1db97e,#0aad6e);box-shadow:0 4px 14px rgba(29,185,126,.4); }
+.ribbon.value   { background:linear-gradient(135deg,#0a8f6e,#067055);box-shadow:0 4px 14px rgba(6,112,85,.45); }
+
+.pname { font-size:1.1rem;font-weight:700;margin-bottom:14px; }
+.save-pill { display:inline-block;padding:4px 12px;border-radius:7px;background:var(--green-dim);border:1px solid var(--border-g);font-size:.72rem;font-weight:700;color:var(--green);margin-bottom:10px; }
+
+.price-row { display:flex;align-items:baseline;flex-wrap:wrap;gap:3px;margin-bottom:2px; }
+.strike { font-size:.82rem;color:var(--muted);text-decoration:line-through;margin-right:4px; }
+.p-big { font-size:2.8rem;font-weight:900;letter-spacing:-.04em;line-height:1; }
+.p-dec { font-size:1.4rem;font-weight:700; }
+.p-per { font-size:.78rem;color:var(--muted);margin-left:4px; }
+.p-sub { font-size:.72rem;color:var(--muted);margin-bottom:20px;min-height:16px; }
+
+.flist { list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:22px; }
+.flist li { display:flex;align-items:flex-start;gap:9px;font-size:.81rem;color:rgba(255,255,255,.72);line-height:1.4; }
+.ck { flex-shrink:0;width:18px;height:18px;border-radius:50%;margin-top:1px;background:var(--green-dim);border:1.5px solid var(--border-g);display:flex;align-items:center;justify-content:center;color:var(--green);font-size:.54rem;font-weight:800; }
+
+.pbtn { width:100%;padding:13px;border-radius:11px;font-family:'Inter',sans-serif;font-size:.84rem;font-weight:700;cursor:pointer;transition:all .22s;letter-spacing:.01em; }
+.pbtn.fill { background:var(--green);border:none;color:#fff;box-shadow:0 6px 20px rgba(29,185,126,.35); }
+.pbtn.fill:hover { background:var(--green2);transform:translateY(-1px); }
+.pbtn.ghost { background:rgba(255,255,255,.055);border:1px solid var(--border);color:var(--muted); }
+.pbtn.ghost:hover { background:rgba(255,255,255,.1);color:var(--white);border-color:rgba(255,255,255,.14); }
+
+.guarantee { display:flex;align-items:center;justify-content:center;gap:8px;margin-top:26px;font-size:.74rem;color:var(--muted); }
+.gck { width:18px;height:18px;border-radius:50%;flex-shrink:0;background:var(--green-dim);border:1px solid var(--border-g);display:flex;align-items:center;justify-content:center;color:var(--green);font-size:.5rem; }
+
+/* ─── MODAL OVERLAY ─── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(7,12,22,.88);
+  backdrop-filter: blur(8px);
+  align-items: center; justify-content: center;
+  padding: 16px;
+  animation: fadeIn .2s ease both;
 }
-.coin-chip {
-  display: flex; align-items: center; gap: 6px;
-  padding: 6px 13px;
-  background: rgba(255,255,255,.05);
+.modal-overlay.open { display: flex; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+.modal {
+  background: var(--modal-bg);
   border: 1px solid rgba(255,255,255,.09);
-  border-radius: 99px;
-  font-size: .76rem; font-weight: 600; color: rgba(255,255,255,.7);
-  letter-spacing: .03em;
-}
-.coin-chip .icon { font-size: .9rem; }
-
-/* ── Donate card ── */
-.donate-card {
-  background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,.08);
   border-radius: 20px;
+  width: 100%; max-width: 420px;
+  box-shadow: 0 40px 80px rgba(0,0,0,.6);
+  animation: slideUp .28s ease both;
   overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(249,115,22,.06);
-  animation: fadeUp .7s .1s ease both;
+  max-height: 90vh;
+  overflow-y: auto;
 }
-.card-header {
-  background: linear-gradient(135deg, rgba(249,115,22,.18), rgba(249,115,22,.06));
-  border-bottom: 1px solid rgba(255,255,255,.07);
-  padding: 20px 26px;
-  display: flex; align-items: center; gap: 12px;
-}
-.card-header-icon {
-  width: 38px; height: 38px; border-radius: 10px;
-  background: linear-gradient(135deg, var(--orange), #ef4444);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-.card-header-text {}
-.card-header-title {
-  font-family: 'Syne', sans-serif;
-  font-size: .95rem; font-weight: 700; color: var(--white);
-}
-.card-header-sub {
-  font-size: .72rem; color: rgba(255,255,255,.45); margin-top: 1px;
-}
+@keyframes slideUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 
-.card-body { padding: 22px 26px 26px; }
-
-.support-label {
-  font-size: .67rem; font-weight: 600; letter-spacing: .1em;
-  text-transform: uppercase; color: rgba(255,255,255,.35);
-  margin-bottom: 10px;
-}
-.coin-mini-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
-.coin-mini {
-  padding: 4px 10px; border-radius: 6px;
-  background: rgba(249,115,22,.1);
-  border: 1px solid rgba(249,115,22,.2);
-  font-size: .68rem; font-weight: 600; color: rgba(249,115,22,.85);
-  letter-spacing: .04em;
-}
-
-.widget-wrap {
-  display: flex; justify-content: center;
-  border-radius: 12px; overflow: hidden;
-  background: rgba(0,0,0,.25);
-}
-.widget-wrap iframe { border-radius: 12px; max-width: 100%; display: block; }
-
-.trust-row {
-  display: flex; align-items: center; justify-content: center; gap: 16px;
-  margin-top: 16px; padding-top: 16px;
-  border-top: 1px solid rgba(255,255,255,.06);
-}
-.trust-item {
-  display: flex; align-items: center; gap: 5px;
-  font-size: .67rem; font-weight: 500; color: rgba(255,255,255,.3);
-  letter-spacing: .04em;
-}
-.trust-item svg { opacity: .5; }
-
-/* ── Footer ── */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 22px 40px;
+/* Modal: Step 1 – plan confirm + email */
+.modal-header {
   display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 12px;
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
 }
-.footer-left {
-  font-size: .74rem; color: rgba(255,255,255,.3);
+.modal-title { font-size:1rem;font-weight:700; }
+.modal-close {
+  width:30px;height:30px;border-radius:8px;border:none;
+  background:rgba(255,255,255,.07);color:var(--muted);
+  cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
 }
-.footer-right {
-  display: flex; gap: 20px; align-items: center;
+.modal-close:hover { background:rgba(255,255,255,.13);color:var(--white); }
+
+.modal-body { padding: 20px 22px 24px; }
+
+/* Plan summary chip */
+.plan-chip {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(29,185,126,.08); border: 1px solid var(--border-g);
+  border-radius: 12px; padding: 14px 16px; margin-bottom: 20px;
 }
-.footer-right a {
-  font-size: .74rem; color: rgba(255,255,255,.3);
-  text-decoration: none; transition: color .2s;
+.plan-chip-left .plan-chip-name { font-size:.92rem;font-weight:700;color:var(--white); }
+.plan-chip-left .plan-chip-desc { font-size:.72rem;color:var(--muted);margin-top:2px; }
+.plan-chip-price { font-size:1.3rem;font-weight:900;color:var(--green); }
+
+/* Crypto note */
+.crypto-note {
+  display:flex;align-items:flex-start;gap:10px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;margin-bottom:18px;
 }
-.footer-right a:hover { color: var(--orange); }
-.powered-by {
-  display: flex; align-items: center; gap: 6px;
-  padding: 5px 12px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.07);
-  border-radius: 99px;
-  font-size: .68rem; font-weight: 600; color: rgba(255,255,255,.35);
-  letter-spacing: .04em; text-transform: uppercase;
+.crypto-note-icon { font-size:1rem;flex-shrink:0;margin-top:1px; }
+.crypto-note-text { font-size:.76rem;color:var(--muted);line-height:1.55; }
+.crypto-note-text strong { color:var(--white);font-weight:600; }
+
+/* Coin pills row */
+.coin-row { display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px; }
+.coin-pill {
+  padding:4px 11px;border-radius:99px;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  font-size:.68rem;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:.04em;
 }
 
-/* ── Animations ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Email field */
+.field { display:flex;flex-direction:column;gap:5px;margin-bottom:16px; }
+.field label { font-size:.68rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted); }
+.field input {
+  padding:11px 14px;border:1.5px solid rgba(255,255,255,.09);border-radius:10px;
+  background:rgba(255,255,255,.05);font-family:'Inter',sans-serif;
+  font-size:.88rem;color:var(--white);outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.field input:focus { border-color:var(--green);box-shadow:0 0 0 3px rgba(29,185,126,.12); }
+.field input::placeholder { color:rgba(255,255,255,.25); }
+
+/* Pay button */
+.pay-btn {
+  width:100%;padding:14px;border-radius:12px;border:none;
+  background:var(--green);color:#fff;
+  font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;
+  cursor:pointer;transition:all .25s;
+  box-shadow:0 6px 22px rgba(29,185,126,.38);
+  display:flex;align-items:center;justify-content:center;gap:9px;
+}
+.pay-btn:hover:not(:disabled) { background:var(--green2);transform:translateY(-1px);box-shadow:0 10px 30px rgba(29,185,126,.48); }
+.pay-btn:disabled { opacity:.55;cursor:not-allowed;transform:none; }
+
+/* Spinner */
+.spinner {
+  display:inline-block;width:14px;height:14px;
+  border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
+  border-radius:50%;animation:spin .7s linear infinite;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* Modal secure note */
+.secure-row {
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  margin-top:12px;font-size:.67rem;color:rgba(255,255,255,.28);
 }
 
-/* ── Responsive ── */
-@media (max-width: 860px) {
-  nav { padding: 18px 20px; }
-  .hero {
-    grid-template-columns: 1fr;
-    padding: 40px 20px 50px;
-    gap: 40px;
-  }
-  .donate-card { max-width: 420px; margin: 0 auto; width: 100%; }
-  .stats { gap: 20px; }
-  footer { padding: 18px 20px; flex-direction: column; align-items: flex-start; }
+/* ─── Step 2: Payment iframe ─── */
+#step-iframe { display:none; }
+.iframe-wrap {
+  display:flex;justify-content:center;
+  border-radius:12px;overflow:hidden;
+  background:rgba(0,0,0,.3);margin-bottom:10px;
 }
-@media (max-width: 440px) {
-  .hero-copy h1 { font-size: 2.2rem; }
-  .card-body { padding: 16px 14px 18px; }
-  .card-header { padding: 16px 14px; }
-  .widget-wrap iframe { width: 100% !important; }
+.iframe-wrap iframe { border-radius:12px;max-width:100%;display:block; }
+
+/* ─── Error state ─── */
+.error-box {
+  display:none;
+  background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);
+  border-radius:10px;padding:12px 14px;
+  font-size:.78rem;color:#fca5a5;margin-bottom:14px;
+}
+.error-box.show { display:block; }
+
+/* ─── FOOTER ─── */
+footer { position:relative;z-index:1;border-top:1px solid var(--border);padding:22px 28px;text-align:center;font-size:.72rem;color:rgba(255,255,255,.24);display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center; }
+footer a { color:rgba(255,255,255,.3);text-decoration:none; }
+footer a:hover { color:var(--green); }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+@media (max-width:700px) {
+  nav { padding:14px 16px; }
+  .nav-links { display:none; }
+  .hero { padding:60px 16px 44px; }
+  .stats-band { padding:0 16px 48px; }
+  .plans-wrap { padding:0 16px 60px; }
+  .grid3 { grid-template-columns:1fr; }
+  .ribbon { right:14px; }
+  .modal { border-radius:16px; }
 }
 </style>
 </head>
 <body>
 
-<div class="blob blob-1"></div>
-<div class="blob blob-2"></div>
-
-<div class="page">
-
-  <!-- NAV -->
-  <nav>
-    <a class="nav-logo" href="#">
-      <div class="logo-icon">♥</div>
-      Give Generously
-    </a>
-    <div class="nav-pill">🔒 Secure Giving</div>
-  </nav>
-
-  <!-- HERO -->
-  <main>
-    <div class="hero">
-
-      <!-- Left: copy -->
-      <div class="hero-copy">
-        <div class="badge">
-          <span class="badge-dot"></span>
-          Crypto Donations · 100+ Coins Accepted
-        </div>
-
-        <h1>Donate Crypto,<br><span>Make an Impact</span></h1>
-
-        <p>Support our mission with any cryptocurrency. Fast, borderless, and secure payments processed via NOWPayments. No account required.</p>
-
-        <div class="coin-strip">
-          <div class="coin-chip"><span class="icon">₿</span> Bitcoin</div>
-          <div class="coin-chip"><span class="icon">Ξ</span> Ethereum</div>
-          <div class="coin-chip"><span class="icon">◎</span> Solana</div>
-          <div class="coin-chip"><span class="icon">₮</span> USDT</div>
-          <div class="coin-chip"><span class="icon">⬡</span> BNB</div>
-          <div class="coin-chip"><span class="icon">✦</span> XRP</div>
-          <div class="coin-chip"><span class="icon">+</span> 100 more</div>
-        </div>
-
-        <div class="stats">
-          <div class="stat-item">
-            <div class="stat-num">100<span>+</span></div>
-            <div class="stat-label">Coins Accepted</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num">0<span>%</span></div>
-            <div class="stat-label">Hidden Fees</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num">24<span>/7</span></div>
-            <div class="stat-label">Always Open</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right: donate widget card -->
-      <div class="donate-card">
-        <div class="card-header">
-          <div class="card-header-icon">₿</div>
-          <div class="card-header-text">
-            <div class="card-header-title">Donate Cryptocurrency</div>
-            <div class="card-header-sub">Powered by NOWPayments · Instant conversion</div>
-          </div>
-        </div>
-
-        <div class="card-body">
-          <div class="support-label">Accepted currencies</div>
-          <div class="coin-mini-row">
-            <span class="coin-mini">BTC</span>
-            <span class="coin-mini">ETH</span>
-            <span class="coin-mini">SOL</span>
-            <span class="coin-mini">USDT</span>
-            <span class="coin-mini">BNB</span>
-            <span class="coin-mini">XRP</span>
-            <span class="coin-mini">LTC</span>
-            <span class="coin-mini">+ more</span>
-          </div>
-
-          <div class="widget-wrap">
-            <iframe
-              src="https://nowpayments.io/embeds/donation-widget?api_key=cd31cdfc-be6a-4280-a677-e33b0ad24f10"
-              width="346" height="623"
-              frameborder="0" scrolling="no"
-              style="overflow-y:hidden; max-width:100%;">
-              Can't load widget
-            </iframe>
-          </div>
-
-          <div class="trust-row">
-            <div class="trust-item">
-              <svg width="11" height="13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5.5 1L1 3.2v3.8C1 9.8 3.1 12 5.5 12S10 9.8 10 7V3.2L5.5 1z"
-                  stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-                <path d="M3.5 6.5l1.5 1.5L8 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              256-bit SSL
-            </div>
-            <div class="trust-item">
-              <svg width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/>
-                <path d="M4 6l1.5 1.5L8 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Non-custodial
-            </div>
-            <div class="trust-item">
-              <svg width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 1v2M6 9v2M1 6h2M9 6h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                <circle cx="6" cy="6" r="2.5" stroke="currentColor" stroke-width="1.2"/>
-              </svg>
-              Instant Processing
-            </div>
-          </div>
-        </div>
-      </div>
-
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="brand-icon">📡</div>
+    Signal Whisper
+  </a>
+  <div class="nav-links">
+    <a href="#">Pricing</a>
+    <a href="#" class="active">Plans</a>
+    <a href="#">FAQ</a>
+    <a href="#">Support</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-secure-badge">
+      <svg viewBox="0 0 14 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M7 1L1 3.5v4.8C1 11.8 3.6 14.5 7 15c3.4-.5 6-3.2 6-6.7V3.5L7 1z"/><path d="M4.5 8l2 2L9.5 6.5" stroke-linecap="round"/></svg>
+      Secure Checkout
     </div>
-  </main>
+    <div class="nav-divider"></div>
+    <button class="btn-green" onclick="document.querySelector('.plans-wrap').scrollIntoView({behavior:'smooth'})">Get Started →</button>
+  </div>
+</nav>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-left">© 2026 Give Generously. All rights reserved.</div>
-    <div class="footer-right">
-      <a href="https://nowpayments.io" target="_blank" rel="noopener">
-        <span class="powered-by">⚡ Powered by NOWPayments</span>
-      </a>
-    </div>
-  </footer>
-
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-bar-item">
+    <svg viewBox="0 0 14 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M7 1L1 3.5v4.8C1 11.8 3.6 14.5 7 15c3.4-.5 6-3.2 6-6.7V3.5L7 1z"/><path d="M4.5 8l2 2L9.5 6.5" stroke-linecap="round"/></svg>
+    256-bit SSL Encrypted
+  </div>
+  <div class="trust-bar-item">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="6"/><path d="M4.5 7l2 2L9.5 5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    NOWPayments Verified
+  </div>
+  <div class="trust-bar-item">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="3" width="12" height="9" rx="2"/><path d="M1 6h12" stroke-linecap="round"/></svg>
+    100+ Cryptocurrencies
+  </div>
+  <div class="trust-bar-item">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 1v12M1 4.5l6-3.5 6 3.5M1 9.5l6 3.5 6-3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Instant Confirmation
+  </div>
+  <div class="trust-bar-item">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 1C3.7 1 1 3.7 1 7s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6z"/><path d="M7 4v3l2 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    30-Day Money-Back
+  </div>
 </div>
 
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-pill"><span class="dot"></span> Live AI Signals Active</div>
+  <h1>AI-Powered Stock &amp;<br><span class="accent">Crypto Signals</span></h1>
+  <p>Get 3–5 daily trading recommendations before markets open. Real-time AI insights on political events driving stocks &amp; crypto.</p>
+  <button class="hero-btn" onclick="document.querySelector('.plans-wrap').scrollIntoView({behavior:'smooth'})">
+    Start Free Trial
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+  </button>
+</section>
+
+<!-- STATS -->
+<div class="stats-band">
+  <div class="stat-card"><div class="stat-val">88%</div><div class="stat-lbl">Win Rate (30 Days)</div></div>
+  <div class="stat-card"><div class="stat-val">+56.2%</div><div class="stat-lbl">Portfolio ROI</div></div>
+  <div class="stat-card"><div class="stat-val">3–5</div><div class="stat-lbl">Daily Signals</div></div>
+  <div class="stat-card"><div class="stat-val">100+</div><div class="stat-lbl">Political Data Points</div></div>
+</div>
+
+<!-- PLANS -->
+<section class="plans-wrap">
+  <h2 class="section-head">Choose Your Plan</h2>
+
+  <div class="trial-banner">
+    <div class="trial-ico">📅</div>
+    <div>
+      <div class="trial-t">3-Day Free Trial Included On All Plans</div>
+      <div class="trial-b">Card required but you won't be charged until Day 2. Cancel anytime. 30-day money-back guarantee.</div>
+    </div>
+  </div>
+
+  <div class="grid3">
+
+    <!-- STARTER -->
+    <div class="pcard">
+      <div class="pname">Starter</div>
+      <div class="price-row"><span class="p-big">$8</span><span class="p-dec">.99</span><span class="p-per">/ week</span></div>
+      <div class="p-sub">&nbsp;</div>
+      <ul class="flist">
+        <li><span class="ck">✓</span>3–5 daily signals (stocks &amp; crypto)</li>
+        <li><span class="ck">✓</span>Basic AI chart analysis (10/month)</li>
+        <li><span class="ck">✓</span>Congressional trading alerts</li>
+        <li><span class="ck">✓</span>Telegram community access</li>
+        <li><span class="ck">✓</span>Email support (48hr response)</li>
+      </ul>
+      <button class="pbtn ghost" onclick="openModal('starter')">Get Started</button>
+    </div>
+
+    <!-- PRO -->
+    <div class="pcard hot">
+      <div class="ribbon popular">Most Popular</div>
+      <div class="pname">Pro</div>
+      <div class="price-row"><span class="p-big">$29</span><span class="p-dec">.00</span><span class="p-per">/ month</span></div>
+      <div class="p-sub">&nbsp;</div>
+      <ul class="flist">
+        <li><span class="ck">✓</span>Everything in Starter, plus:</li>
+        <li><span class="ck">✓</span>Unlimited AI chart analysis</li>
+        <li><span class="ck">✓</span>Real-time mid-day alerts</li>
+        <li><span class="ck">✓</span>Priority Telegram support (12hr)</li>
+        <li><span class="ck">✓</span>Insider trading data access</li>
+        <li><span class="ck">✓</span>Weekly strategy webinars</li>
+      </ul>
+      <button class="pbtn fill" onclick="openModal('pro')">Get Started</button>
+    </div>
+
+    <!-- ANNUAL PRO -->
+    <div class="pcard">
+      <div class="ribbon value">Best Value</div>
+      <div class="pname">Annual Pro</div>
+      <div class="save-pill">Save $98/year</div>
+      <div class="price-row"><span class="strike">$348</span><span class="p-big">$250</span><span class="p-per">/ year</span></div>
+      <div class="p-sub">$20.83/month · billed annually</div>
+      <ul class="flist">
+        <li><span class="ck">✓</span>Everything in Pro, plus:</li>
+        <li><span class="ck">✓</span>Save $98 per year (28% off)</li>
+        <li><span class="ck">✓</span>1-on-1 strategy consultation (quarterly)</li>
+        <li><span class="ck">✓</span>Custom watchlist alerts</li>
+        <li><span class="ck">✓</span>Extended performance history</li>
+        <li><span class="ck">✓</span>Lock in price forever</li>
+      </ul>
+      <button class="pbtn ghost" onclick="openModal('annual')">Get Started</button>
+    </div>
+
+  </div>
+
+  <div class="guarantee">
+    <span class="gck">✓</span>
+    30-day money-back guarantee &nbsp;·&nbsp; Cancel anytime &nbsp;·&nbsp; No hidden fees
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Signal Whisper. All rights reserved.</span>
+  <a href="#">Privacy Policy</a>
+  <a href="#">Terms of Service</a>
+  <a href="#">Contact Support</a>
+  <span style="color:rgba(255,255,255,.18)">·</span>
+  <span style="color:rgba(255,255,255,.22)">Crypto payments by <a href="https://nowpayments.io" target="_blank" rel="noopener" style="color:rgba(29,185,126,.6)">NOWPayments</a></span>
+</footer>
+
+<!-- ══════════════════════════════════════
+     CRYPTO CHECKOUT MODAL
+══════════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Complete Your Purchase</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- ── Step 1: Confirm + Email ── -->
+      <div id="step-confirm">
+
+        <!-- Plan chip -->
+        <div class="plan-chip">
+          <div class="plan-chip-left">
+            <div class="plan-chip-name" id="chipName">Pro Plan</div>
+            <div class="plan-chip-desc" id="chipDesc">Monthly · Cancel anytime</div>
+          </div>
+          <div class="plan-chip-price" id="chipPrice">$29.00</div>
+        </div>
+
+        <!-- Crypto info -->
+        <div class="crypto-note">
+          <div class="crypto-note-icon">₿</div>
+          <div class="crypto-note-text">
+            Pay with <strong>100+ cryptocurrencies</strong> including BTC, ETH, SOL, USDT, XRP and more. Processed securely via NOWPayments — no account required.
+          </div>
+        </div>
+
+        <!-- Accepted coins -->
+        <div class="coin-row">
+          <span class="coin-pill">₿ BTC</span>
+          <span class="coin-pill">Ξ ETH</span>
+          <span class="coin-pill">◎ SOL</span>
+          <span class="coin-pill">₮ USDT</span>
+          <span class="coin-pill">✦ XRP</span>
+          <span class="coin-pill">⬡ BNB</span>
+          <span class="coin-pill">Ł LTC</span>
+          <span class="coin-pill">+ more</span>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+          <label>Your Email (for receipt &amp; access)</label>
+          <input type="email" id="userEmail" placeholder="you@example.com" autocomplete="email">
+        </div>
+
+        <!-- Error box -->
+        <div class="error-box" id="errorBox"></div>
+
+        <!-- Pay button -->
+        <button class="pay-btn" id="payBtn" onclick="initPayment()">
+          <span>₿</span> Pay with Crypto
+        </button>
+
+        <div class="secure-row">
+          <svg width="10" height="12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 1L1 3v3.5C1 9.1 2.8 11 5 11s4-1.9 4-4.5V3L5 1z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+            <path d="M3 6l1.5 1.5L7.5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          256-bit SSL · Powered by NOWPayments
+        </div>
+      </div>
+
+      <!-- ── Step 2: Payment widget ── -->
+      <div id="step-iframe">
+        <div class="iframe-wrap">
+          <iframe id="payIframe"
+            width="346" height="630"
+            frameborder="0" scrolling="no"
+            style="overflow-y:hidden;max-width:100%;border-radius:12px;">
+          </iframe>
+        </div>
+        <div class="secure-row" style="margin-top:8px;">
+          <svg width="10" height="12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 1L1 3v3.5C1 9.1 2.8 11 5 11s4-1.9 4-4.5V3L5 1z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+            <path d="M3 6l1.5 1.5L7.5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Secured by NOWPayments · Payments are non-refundable after confirmation
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Plan definitions ── */
+const PLANS = {
+  starter: {
+    name:   'Starter Plan',
+    desc:   'Weekly · 3–5 daily signals',
+    price:  8.99,
+    label:  '$8.99',
+    period: 'week',
+    id:     'SW-STARTER'
+  },
+  pro: {
+    name:   'Pro Plan',
+    desc:   'Monthly · Cancel anytime',
+    price:  29.00,
+    label:  '$29.00',
+    period: 'month',
+    id:     'SW-PRO'
+  },
+  annual: {
+    name:   'Annual Pro Plan',
+    desc:   'Yearly · Best value · Save $98',
+    price:  250.00,
+    label:  '$250.00',
+    period: 'year',
+    id:     'SW-ANNUAL'
+  }
+};
+
+const NP_API_KEY = 'cd31cdfc-be6a-4280-a677-e33b0ad24f10';
+let currentPlan = null;
+
+/* ── Open modal ── */
+function openModal(planKey) {
+  currentPlan = PLANS[planKey];
+  document.getElementById('modalTitle').textContent   = 'Complete Your Purchase';
+  document.getElementById('chipName').textContent     = currentPlan.name;
+  document.getElementById('chipDesc').textContent     = currentPlan.desc;
+  document.getElementById('chipPrice').textContent    = currentPlan.label;
+  document.getElementById('step-confirm').style.display = 'block';
+  document.getElementById('step-iframe').style.display  = 'none';
+  document.getElementById('errorBox').classList.remove('show');
+  document.getElementById('userEmail').value = '';
+  resetPayBtn();
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function resetPayBtn() {
+  const btn = document.getElementById('payBtn');
+  btn.disabled = false;
+  btn.innerHTML = '<span>₿</span> Pay with Crypto';
+}
+
+function showError(msg) {
+  const box = document.getElementById('errorBox');
+  box.textContent = msg;
+  box.classList.add('show');
+}
+
+/* ── Init payment: create NOWPayments invoice ── */
+async function initPayment() {
+  const email = document.getElementById('userEmail').value.trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showError('Please enter a valid email address to receive your receipt and access details.');
+    return;
+  }
+
+  document.getElementById('errorBox').classList.remove('show');
+  const btn = document.getElementById('payBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Creating invoice…';
+
+  const orderId  = `${currentPlan.id}-${Date.now()}`;
+  const desc     = `Signal Whisper ${currentPlan.name} — ${email}`;
+
+  try {
+    const res = await fetch('https://api.nowpayments.io/v1/invoice', {
+      method: 'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'x-api-key':     NP_API_KEY
+      },
+      body: JSON.stringify({
+        price_amount:        currentPlan.price,
+        price_currency:      'usd',
+        order_id:            orderId,
+        order_description:   desc,
+        success_url:         window.location.origin + '/?payment=success',
+        cancel_url:          window.location.href,
+        is_fixed_rate:       false,
+        is_fee_paid_by_user: false
+      })
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.message || `API error ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    if (data.invoice_url) {
+      /* ── Preferred: open NOWPayments hosted invoice page ── */
+      window.open(data.invoice_url, '_blank', 'noopener');
+      /* Also embed inline as fallback */
+      showIframeStep(data.invoice_url);
+    } else {
+      throw new Error('No invoice URL returned.');
+    }
+
+  } catch (err) {
+    console.error('NOWPayments invoice error:', err);
+    /* ── Graceful fallback: load donation widget for this plan ── */
+    showError(`Could not create invoice automatically. Loading payment widget… (${err.message})`);
+    setTimeout(() => {
+      document.getElementById('errorBox').classList.remove('show');
+      showIframeStep(
+        `https://nowpayments.io/embeds/donation-widget?api_key=${NP_API_KEY}`
+      );
+    }, 1800);
+  }
+}
+
+/* ── Show iframe payment step ── */
+function showIframeStep(url) {
+  document.getElementById('step-confirm').style.display = 'none';
+  const iframeStep = document.getElementById('step-iframe');
+  iframeStep.style.display = 'block';
+  document.getElementById('payIframe').src = url;
+  document.getElementById('modalTitle').textContent = '₿ Complete Crypto Payment';
+}
+</script>
 </body>
 </html>
